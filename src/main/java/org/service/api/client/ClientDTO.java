@@ -1,4 +1,4 @@
-package org.service.api;
+package org.service.api.client;
 
 import org.service.model.Client;
 import org.service.model.exception.ClientValidationException;
@@ -19,7 +19,7 @@ public class ClientDTO {
     }
 
     public Client createClient() throws ClientValidationException {
-      return new Client(this.name, this.surname, this.phoneNumber, this.secondPhoneNumber, this.email);
+        return new Client(this.name, this.surname, this.phoneNumber, this.secondPhoneNumber, this.email);
     }
 
     @Override

@@ -1,9 +1,11 @@
-package org.service.api;
+package org.service.api.client;
 
 
 import org.service.model.Client;
 
+import java.util.List;
+
 public interface ClientApi {
     void addClient(Client client);
-    void updateClient(Client client);
+    List<Client> getAllClients();
 }
