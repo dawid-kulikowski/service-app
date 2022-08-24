@@ -1,4 +1,4 @@
-package org.service.repository;
+package org.service.repository.client;
 
 import org.service.model.Client;
 import org.service.model.exception.ClientValidationException;
@@ -10,6 +10,9 @@ public class ClientEntity {
     private String phoneNumber;
     private String secondPhoneNumber;
     private String email;
+
+    public ClientEntity() {
+    }
 
     public ClientEntity(int clientId,
                         String name,
@@ -38,51 +41,51 @@ public class ClientEntity {
         }
     }
 
-    private int getClientId() {
+    public int getClientId() {
         return clientId;
     }
 
-    private void setClientId(int clientId) {
+    public void setClientId(int clientId) {
         this.clientId = clientId;
     }
 
-    private String getName() {
+    public String getName() {
         return name;
     }
 
-    private void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    private String getSurname() {
+    public String getSurname() {
         return surname;
     }
 
-    private void setSurname(String surname) {
+    public void setSurname(String surname) {
         this.surname = surname;
     }
 
-    private String getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    private void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
-    private String getSecondPhoneNumber() {
+    public String getSecondPhoneNumber() {
         return secondPhoneNumber;
     }
 
-    private void setSecondPhoneNumber(String secondPhoneNumber) {
+    public void setSecondPhoneNumber(String secondPhoneNumber) {
         this.secondPhoneNumber = secondPhoneNumber;
     }
 
-    private String getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    private void setEmail(String email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 }

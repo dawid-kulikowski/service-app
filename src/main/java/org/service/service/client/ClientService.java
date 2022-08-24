@@ -1,7 +1,8 @@
-package org.service.service;
+package org.service.service.client;
 
 import org.service.model.Client;
-import org.service.repository.DatabaseClientRepository;
+import org.service.repository.client.DatabaseClientRepository;
+import org.service.repository.exception.ClientIdException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 @Service
 public class ClientService {
 
-    private DatabaseClientRepository databaseClientRepository;
+    private final DatabaseClientRepository databaseClientRepository;
 
     public ClientService(DatabaseClientRepository databaseClientRepository) {
         this.databaseClientRepository = databaseClientRepository;
@@ -21,5 +22,9 @@ public class ClientService {
 
     public List<Client> getAllClients() {
         return databaseClientRepository.getAllClients();
+    }
+
+    public Client getClientById(Integer clientId) throws ClientIdException {
+        return databaseClientRepository.getClientById(clientId);
     }
 }

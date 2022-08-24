@@ -1,15 +1,14 @@
-package org.service.repository;
+package org.service.repository.client;
 
 import org.service.model.Client;
-import org.service.model.exception.ClientValidationException;
+import org.service.repository.exception.ClientIdException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class DatabaseClientRepository implements ClientRepository {
@@ -23,10 +22,17 @@ public class DatabaseClientRepository implements ClientRepository {
             SELECT client_id, name, surname, phone_number, second_phone_number, email
             FROM client
             """;
+
+    private static final String GET_CLIENT_BY_ID = """
+            SELECT client_id, name, surname, phone_number, second_phone_number, email
+            FROM client
+            WHERE client_id = ?
+            """;
+
     private final JdbcTemplate jdbcTemplate;
 
-    public DatabaseClientRepository(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    public DatabaseClientRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
@@ -42,6 +48,23 @@ public class DatabaseClientRepository implements ClientRepository {
     @Override
     public void updateClient(Client client) {
 
+    }
+
+    @Override
+    public Client getClientById(Integer clientId) throws ClientIdException {
+
+        ClientEntity clientEntity;
+
+        try {
+            clientEntity = jdbcTemplate
+                    .queryForObject(GET_CLIENT_BY_ID,
+                            new BeanPropertyRowMapper<>(ClientEntity.class),
+                            clientId);
+        } catch (DataAccessException ex) {
+            throw new ClientIdException(clientId);
+        }
+
+        return clientEntity.createClient();
     }
 
     @Override

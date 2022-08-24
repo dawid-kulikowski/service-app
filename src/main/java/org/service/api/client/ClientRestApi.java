@@ -2,7 +2,7 @@ package org.service.api.client;
 
 import org.service.model.Client;
 import org.service.model.exception.ClientValidationException;
-import org.service.service.ClientService;
+import org.service.service.client.ClientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
