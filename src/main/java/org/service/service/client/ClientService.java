@@ -16,8 +16,8 @@ public class ClientService {
         this.databaseClientRepository = databaseClientRepository;
     }
 
-    public void addClient(Client client) {
-        databaseClientRepository.addClient(client);
+    public Integer addClient(Client client) {
+        return databaseClientRepository.addClient(client);
     }
 
     public List<Client> getAllClients() {

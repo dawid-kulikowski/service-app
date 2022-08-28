@@ -7,6 +7,7 @@ public class OrderEntity {
     private String surname;
     private String phoneNumber;
     private String deviceType;
+    private String orderStatus;
 
     public OrderEntity() {
     }
@@ -49,5 +50,13 @@ public class OrderEntity {
 
     public void setDeviceType(String deviceType) {
         this.deviceType = deviceType;
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
     }
 }

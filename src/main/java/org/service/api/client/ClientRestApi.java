@@ -4,7 +4,11 @@ import org.service.model.Client;
 import org.service.model.exception.ClientValidationException;
 import org.service.service.client.ClientService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -12,7 +16,7 @@ import java.util.List;
 @RequestMapping("/client")
 public class ClientRestApi implements ClientApi {
 
-    private ClientService clientService;
+    private final ClientService clientService;
 
     public ClientRestApi(ClientService clientService) {
         this.clientService = clientService;
@@ -20,12 +24,14 @@ public class ClientRestApi implements ClientApi {
 
     @PostMapping
     public ResponseEntity<String> addClient(@RequestBody ClientDTO clientDTO) {
+        String clientId;
+
         try {
-            addClient(clientDTO.createClient());
+            clientId = Integer.toString(addClient(clientDTO.createClient()));
         } catch (ClientValidationException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(clientId);
     }
 
     @GetMapping
@@ -34,8 +40,8 @@ public class ClientRestApi implements ClientApi {
     }
 
     @Override
-    public void addClient(Client client) {
-        clientService.addClient(client);
+    public Integer addClient(Client client) {
+        return clientService.addClient(client);
     }
 
     @Override

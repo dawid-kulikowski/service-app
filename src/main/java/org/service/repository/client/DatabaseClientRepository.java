@@ -5,10 +5,13 @@ import org.service.repository.exception.ClientIdException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
+import java.sql.PreparedStatement;
 import java.util.List;
+
+import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
 @Repository
 public class DatabaseClientRepository implements ClientRepository {
@@ -28,6 +31,7 @@ public class DatabaseClientRepository implements ClientRepository {
             FROM client
             WHERE client_id = ?
             """;
+    public static final String CLIENT_ID = "client_id";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -36,13 +40,21 @@ public class DatabaseClientRepository implements ClientRepository {
     }
 
     @Override
-    public void addClient(Client client) {
-        jdbcTemplate.update(INSERT_CLIENT_SQL,
-                client.getName(),
-                client.getSurname(),
-                client.getPhoneNumber(),
-                client.getSecondPhoneNumber(),
-                client.getEmail());
+    public Integer addClient(Client client) {
+        GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CLIENT_SQL, RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, client.getName());
+            preparedStatement.setString(2, client.getSurname());
+            preparedStatement.setString(3, client.getPhoneNumber());
+            preparedStatement.setString(4, client.getSecondPhoneNumber());
+            preparedStatement.setString(5, client.getEmail());
+
+            return preparedStatement;
+        }, generatedKeyHolder);
+
+        return (Integer) generatedKeyHolder.getKeyList().get(0).get(CLIENT_ID);
     }
 
     @Override

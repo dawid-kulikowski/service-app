@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ClientRepository {
 
-    void addClient(Client client);
+    Integer addClient(Client client);
 
     void updateClient(Client client);
 

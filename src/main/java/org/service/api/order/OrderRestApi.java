@@ -36,6 +36,13 @@ public class OrderRestApi implements OrderApi {
         return ResponseEntity.ok(getAllOrders());
     }
 
+    @PutMapping(path = "/nextStatus/{orderId}")
+    public ResponseEntity<Integer> changeToNextStatus(@PathVariable Integer orderId) {
+        orderService.changeToNextStatus(orderId);
+
+        return ResponseEntity.ok(orderId);
+    }
+
     @Override
     public void addOrder(Order order, Integer clientId) throws ClientIdException {
         orderService.addOrder(order, clientId);

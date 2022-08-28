@@ -1,9 +1,6 @@
 package org.service.repository.order;
 
-import org.service.model.Client;
-import org.service.model.Device;
-import org.service.model.DeviceType;
-import org.service.model.Order;
+import org.service.model.*;
 import org.service.model.exception.ClientValidationException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -26,10 +23,17 @@ public class DatabaseOrderRepository implements OrderRepository {
             c.second_phone_number,
             c.email,
             s.order_id,
-            s.device_type
+            s.device_type,
+            s.order_status
             FROM service.client c
             INNER JOIN service.service_order s
             ON c.client_id = s.client_id
+            """;
+
+    private static final String CHANGE_TO_NEXT_STATUS_SQL = """
+            UPDATE service_order
+            SET order_status = ?
+            WHERE order_id = ?
             """;
 
     private final JdbcTemplate jdbcTemplate;
@@ -59,6 +63,11 @@ public class DatabaseOrderRepository implements OrderRepository {
                 .toList();
     }
 
+    @Override
+    public void changeToNextStatus(Integer orderId, OrderStatus orderStatus) {
+        jdbcTemplate.update(CHANGE_TO_NEXT_STATUS_SQL, orderStatus.toString(), orderId);
+    }
+
     private static Order getOrder(OrderEntity orderEntity) throws ClientValidationException {
         return new Order(
                 orderEntity.getOrderId(),
@@ -75,6 +84,7 @@ public class DatabaseOrderRepository implements OrderRepository {
                         null),
                 null,
                 null,
+                OrderStatus.valueOf(orderEntity.getOrderStatus()),
                 false,
                 0d
         );

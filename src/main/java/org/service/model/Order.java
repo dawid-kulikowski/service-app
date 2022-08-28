@@ -36,12 +36,14 @@ public class Order {
                  Device device,
                  String orderDesc,
                  String repairDiagnosis,
+                 OrderStatus orderStatus,
                  boolean charger,
                  double price) {
 
         this(device, orderDesc, repairDiagnosis, charger, price);
         this.orderId = orderId;
         this.client = client;
+        this.orderStatus = orderStatus;
     }
 
     public Client getClient() {
