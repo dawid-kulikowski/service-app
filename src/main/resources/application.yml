@@ -3,4 +3,8 @@ spring:
     dataSourceClassName: org.postgresql.ds.PGSimpleDataSource
     username: postgres
     password: root
-    url: jdbc:postgresql://192.168.99.3:5432/postgres?currentSchema=service
+    url: jdbc:postgresql://localhost:5432/postgres
+
+
+
+#    currentSchema=service
